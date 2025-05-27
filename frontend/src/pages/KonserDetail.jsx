@@ -57,6 +57,7 @@ function KonserDetail() {
         localStorage.setItem("nama", userData.nama);
         localStorage.setItem("umur", userData.umur);
         
+    
 
     if (tiket.quota <= 0) {
       alert("Maaf, tiket sudah habis!");
@@ -88,7 +89,13 @@ function KonserDetail() {
       );
       setTiket(tiketMatch || null);
     } catch (error) {
-      alert("Terjadi kesalahan saat order tiket.");
+      if (
+        error.response?.data?.message === "Anda sudah memesan tiket ini !"
+      ) {
+        alert("Anda sudah membeli tiket konser ini!");
+      } else {
+        alert("Terjadi kesalahan saat order tiket.");
+      }
       console.error("Error order/refresh konser/tiket detail:", error);
     }
   };
