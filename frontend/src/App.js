@@ -3,8 +3,6 @@ import { AuthProvider, useAuthContext } from "./auth/AuthProvider";
 import AdminDashboard from "./pages/AdminDashboard";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import OrderPage from "./pages/OrderPage";
-//import UserDashboard from "./pages/UserDashboard";
 import KonserApp from "./pages/Konser";
 import AdminKonser from "./pages/AdminKonser";
 import AdminTiket from "./pages/AdminTiket";
@@ -29,20 +27,7 @@ function AppRoutes() {
       <Route path="/" element={<LoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route
-        path="/admin"
-        element={
-          isAuthenticated ? <AdminDashboard /> : <Navigate to="/login" />
-        }
-      />
-      {/* <Route
-        path="/notes/add"
-        element={isAuthenticated ? <AddNote /> : <Navigate to="/login" />}
-      /> */}
-      <Route
-        path="/order"
-        element={isAuthenticated ? <OrderPage /> : <Navigate to="/login" />}
-      />
+
       <Route
         path="/dashboard"
         element={isAuthenticated ? <KonserApp /> : <Navigate to="/login" />}

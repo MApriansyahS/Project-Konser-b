@@ -19,6 +19,18 @@ export async function orderTicket(req, res) {
       where: { id: req.params.id },
     });
 
+    const namaTiket = tiket.nama;
+
+    const isOrdered = await Pengunjung.findOne({
+      where: { email: email, tiket: namaTiket },
+    });
+
+    if (isOrdered) {
+      const error = new Error("Anda sudah memesan tiket ini !");
+      error.statusCode = 400;
+      throw error;
+    }
+
     if (!tiket) {
       const error = new Error("Tiket tidak ditemukan !");
       error.statusCode = 400;
@@ -45,7 +57,6 @@ export async function orderTicket(req, res) {
         where: { id: req.params.id },
       }
     );
-    const namaTiket = tiket.nama;
     await Pengunjung.create({
       nama: nama,
       umur: umur,

@@ -5,7 +5,7 @@ import useAuth from "../auth/UseAuth.js";
 import { useNavigate } from "react-router-dom";
 
 function KonserApp() {
-  const { accessToken } = useAuth();
+  const { accessToken, refreshAccessToken, logout} = useAuth();
   const [konserList, setKonserList] = useState([]);
   const navigate = useNavigate();
 
@@ -35,6 +35,14 @@ function KonserApp() {
   return (
     <div className="min-h-screen bg-gray-100 p-8">
       <div className="max-w-5xl mx-auto">
+        <div className="flex justify-end mb-4">
+          <button
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+            onClick={logout}
+          >
+            Logout
+          </button>
+        </div>
         <h1 className="text-3xl font-bold mb-8 text-center">Daftar Konser</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
           {konserList.length > 0 ? (

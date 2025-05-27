@@ -57,9 +57,9 @@ const AdminDashboard = () => {
           <div className="navbar-end">
             <div className="navbar-item">
               <div className="buttons">
-                <a href="/logout" className="button is-light">
+                <button onClick={logout} className="button is-light">
                   Logout
-                </a>
+                </button>
               </div>
             </div>
           </div>
