@@ -69,8 +69,15 @@ function AdminKonser() {
   };
 
   return (
-    <>
-      {/* Navbar Bulma */}
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundImage: `url("https://storage.googleapis.com/project-storage-konser/images/konser.jpg")`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       <nav className="navbar is-primary" role="navigation" aria-label="main navigation">
         <div className="navbar-menu is-active">
           <div className="navbar-start">
@@ -252,7 +259,7 @@ function AdminKonser() {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
 

@@ -40,6 +40,18 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{
+          backgroundImage: `url("https://storage.googleapis.com/project-storage-konser/images/konser.jpg")`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        <div className="bg-white p-8 rounded-lg shadow-lg w-96">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-96"></div>
+        </div>
       <nav
         className="navbar is-primary"
         role="navigation"
@@ -152,6 +164,7 @@ const AdminDashboard = () => {
             )}
           </div>
         </div>
+      </div>
       </div>
     </>
   );

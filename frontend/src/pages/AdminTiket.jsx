@@ -56,7 +56,15 @@ function AdminTiket() {
   };
 
   return (
-    <>
+    <div
+    className="min-h-screen flex items-center justify-center"
+    style={{
+      backgroundImage: `url("https://storage.googleapis.com/project-storage-konser/images/konser.jpg")`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}
+  >
       {/* Navbar Bulma */}
       <nav
         className="navbar is-primary"
@@ -181,8 +189,8 @@ function AdminTiket() {
           </div>
         )}
       </section>
-    </>
+    </div>
   );
-};
+}
 
 export default AdminTiket;
