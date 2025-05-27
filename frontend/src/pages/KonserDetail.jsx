@@ -51,11 +51,12 @@ function KonserDetail() {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
     );    
-        setNama(res.data.nama);
-        setUmur(res.data.umur);
-        localStorage.setItem("nama", res.data.nama);
-        localStorage.setItem("umur", res.data.umur);
-    
+        const userData = res.data.data;
+        setNama(userData.nama);
+        setUmur(userData.umur);
+        localStorage.setItem("nama", userData.nama);
+        localStorage.setItem("umur", userData.umur);
+        
 
     if (tiket.quota <= 0) {
       alert("Maaf, tiket sudah habis!");
@@ -64,9 +65,9 @@ function KonserDetail() {
     await axios.patch(
         `${BASE_URL}/order/${tiket.id}`,
         {
-          nama: nama,
+          nama: userData.nama,
           email: email,
-          umur: umur,
+          umur: userData.umur,
           tiket: tiket.nama,
         },
         {
