@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage.js";
 import AdminKonser from "./pages/AdminKonser.js";
 import AdminTiket from "./pages/AdminTiket.js";
 import Detail from "./pages/Details.js";
+import Profile from "./pages/Profilepage.js";
 
 function App() {
   return (
@@ -48,6 +49,10 @@ function AppRoutes() {
       <Route
         path="/dashboard/:id"
         element={isAuthenticated ? <Detail /> : <Navigate to="/login" />}
+      />
+      <Route
+        path="/profile"
+        element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
       />
     </Routes>
   );

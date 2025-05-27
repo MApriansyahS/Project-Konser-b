@@ -223,6 +223,7 @@ function Detail() {
                 >
                   Kembali
                 </button>
+                
               </div>
             </div>
           </div>

@@ -85,9 +85,13 @@ function Dashboard() {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <span className="navbar-item has-text-weight-bold is-size-5">
-            Halo, {userName} !
-          </span>
+          <button
+            className="navbar-item button is-link is-light has-text-weight-bold is-size-5"
+            style={{ border: "none", background: "none", cursor: "pointer" }}
+            onClick={() => navigate("/profile")}
+          >
+            Profile {userName}
+          </button>
         </div>
 
         <div className="navbar-end">
