@@ -9,16 +9,23 @@ const RegisterPage = () => {
   const [umur, setUmur] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
+    setErrorMsg("");
     if (pass !== confirmPassword) {
-      alert("Password and confirm password do not match!");
+      setErrorMsg("Password and confirm password do not match!");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMsg("Masukkan email yang valid!");
       return;
     }
     console.log("Register with", { nama, email, umur, pass });
     try {
-      const response = await axios.post(`${BASE_URL}/register`, {
+      await axios.post(`${BASE_URL}/register`, {
         nama,
         email,
         umur,
@@ -27,7 +34,7 @@ const RegisterPage = () => {
       navigate("/login");
     } catch (error) {
       console.error("Register Error:", error.response?.data || error.message);
-      alert(error.response?.data?.message || "Registrasi gagal !");
+      setErrorMsg(error.response?.data?.message || "Registrasi gagal !");
     }
   };
 
@@ -54,7 +61,11 @@ const RegisterPage = () => {
     >
       <div
         className="box"
-        style={{ width: "384px", backgroundColor: "rgba(44, 44, 44, 0.85)", color: "white" }}
+        style={{
+          width: "384px",
+          backgroundColor: "rgba(44, 44, 44, 0.85)",
+          color: "white",
+        }}
       >
         <h2 className="title has-text-white has-text-centered">Register</h2>
         <input
@@ -98,6 +109,9 @@ const RegisterPage = () => {
         >
           Register
         </button>
+        {errorMsg && (
+          <p className="has-text-centered has-text-danger mb-2">{errorMsg}</p>
+        )}
         <p className="has-text-centered">
           Sudah Punya Akun?{" "}
           <Link to="/login" className="has-text-link">

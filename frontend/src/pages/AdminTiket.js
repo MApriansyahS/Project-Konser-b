@@ -8,6 +8,8 @@ function AdminTiket() {
   const { accessToken, logout } = useAuth();
   const [tiketList, setTiketList] = useState([]);
   const [editingTiket, setEditingTiket] = useState(null);
+  const [statusMsg, setStatusMsg] = useState("");
+  const [statusType, setStatusType] = useState(""); // 'success' atau 'error'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,8 +53,11 @@ function AdminTiket() {
 
   const handleUpdateTiket = async (e) => {
     e.preventDefault();
+    setStatusMsg("");
+    setStatusType("");
     if (!accessToken) {
-      alert("Anda harus login sebagai admin.");
+      setStatusMsg("Anda harus login sebagai admin.");
+      setStatusType("error");
       return;
     }
     try {
@@ -68,9 +73,12 @@ function AdminTiket() {
       );
       setEditingTiket(null);
       fetchTiket();
+      setStatusMsg("Berhasil mengupdate tiket.");
+      setStatusType("success");
     } catch (error) {
       console.error("Error updating tiket:", error);
-      alert(error.response?.data?.message || "Gagal mengupdate tiket");
+      setStatusMsg(error.response?.data?.message || "Gagal mengupdate tiket");
+      setStatusType("error");
     }
   };
 
@@ -132,6 +140,17 @@ function AdminTiket() {
       <section className="section" style={{ flexGrow: 1 }}>
         <div className="container box">
           <h2 className="title is-4">Daftar Tiket</h2>
+          {statusMsg && (
+            <div
+              className={`mb-3 has-text-centered ${
+                statusType === "error"
+                  ? "has-text-danger"
+                  : "has-text-success"
+              }`}
+            >
+              {statusMsg}
+            </div>
+          )}
           <div className="table-container">
             <table className="table is-fullwidth is-striped is-hoverable">
               <thead>
@@ -223,6 +242,17 @@ function AdminTiket() {
                     Simpan
                   </button>
                 </div>
+                {statusMsg && (
+                  <div
+                    className={`mt-3 has-text-centered ${
+                      statusType === "error"
+                        ? "has-text-danger"
+                        : "has-text-success"
+                    }`}
+                  >
+                    {statusMsg}
+                  </div>
+                )}
               </form>
             </section>
           </div>

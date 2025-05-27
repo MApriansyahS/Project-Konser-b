@@ -10,6 +10,8 @@ function Detail() {
   const [konser, setKonser] = useState(null);
   const [tiket, setTiket] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [orderMsg, setOrderMsg] = useState("");
+  const [orderMsgType, setOrderMsgType] = useState(""); // 'success' atau 'error'
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +41,8 @@ function Detail() {
   }, [id, accessToken]);
 
   const handleOrder = async () => {
+    setOrderMsg("");
+    setOrderMsgType("");
     if (!accessToken || !konser || !tiket) return;
     try {
       const email = localStorage.getItem("email");
@@ -50,7 +54,8 @@ function Detail() {
       localStorage.setItem("umur", userData.umur);
 
       if (tiket.quota <= 0) {
-        alert("Maaf, tiket sudah habis!");
+        setOrderMsg("Maaf, tiket sudah habis!");
+        setOrderMsgType("error");
         return;
       }
 
@@ -66,7 +71,8 @@ function Detail() {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
-      alert("Order berhasil!");
+      setOrderMsg("Order berhasil!");
+      setOrderMsgType("success");
 
       // Refresh konser dan tiket
       const konserRes = await axios.get(`${BASE_URL}/konser/${id}`, {
@@ -82,9 +88,11 @@ function Detail() {
       setTiket(tiketMatch || null);
     } catch (error) {
       if (error.response?.data?.message === "Anda sudah memesan tiket ini !") {
-        alert("Anda sudah membeli tiket konser ini!");
+        setOrderMsg("Anda sudah membeli tiket konser ini!");
+        setOrderMsgType("error");
       } else {
-        alert("Terjadi kesalahan saat order tiket.");
+        setOrderMsg("Terjadi kesalahan saat order tiket.");
+        setOrderMsgType("error");
       }
       console.error("Error order:", error);
     }
@@ -198,6 +206,17 @@ function Detail() {
                 <button className="button is-primary" onClick={handleOrder}>
                   Order
                 </button>
+                {orderMsg && (
+                  <div
+                    className={`mt-3 has-text-centered ${
+                      orderMsgType === "error"
+                        ? "has-text-danger"
+                        : "has-text-success"
+                    }`}
+                  >
+                    {orderMsg}
+                  </div>
+                )}
                 <button
                   className="button is-light"
                   onClick={() => navigate(-1)}

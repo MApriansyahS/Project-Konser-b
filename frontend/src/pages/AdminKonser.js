@@ -16,6 +16,8 @@ function AdminKonser() {
   const [bintangtamu, setBintang] = useState("");
   const [harga, setHarga] = useState();
   const [quota, setQuota] = useState();
+  const [statusMsg, setStatusMsg] = useState("");
+  const [statusType, setStatusType] = useState(""); // 'success' atau 'error'
 
   useEffect(() => {
     if (accessToken) fetchKonser();
@@ -50,10 +52,14 @@ function AdminKonser() {
       });
     }
   };
+
   const handleUpdateKonser = async (e) => {
     e.preventDefault();
+    setStatusMsg("");
+    setStatusType("");
     if (!accessToken) {
-      alert("Anda harus login sebagai admin.");
+      setStatusMsg("Anda harus login sebagai admin.");
+      setStatusType("error");
       return;
     }
     try {
@@ -73,9 +79,29 @@ function AdminKonser() {
       );
       setEditingKonser(null);
       fetchKonser();
+      setStatusMsg("Berhasil mengupdate konser.");
+      setStatusType("success");
     } catch (error) {
       console.error("Error updating tiket:", error);
-      alert(error.response?.data?.message || "Gagal mengupdate tiket");
+      setStatusMsg(error.response?.data?.message || "Gagal mengupdate tiket");
+      setStatusType("error");
+    }
+  };
+
+  const handleDeleteKonser = async (id) => {
+    setStatusMsg("");
+    setStatusType("");
+    try {
+      await axios.delete(`${BASE_URL}/konser/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      fetchKonser();
+      setStatusMsg("Berhasil menghapus konser.");
+      setStatusType("success");
+    } catch (error) {
+      console.error("Error delete konser:", error);
+      setStatusMsg(error.response?.data?.message || "Gagal Menghapus konser");
+      setStatusType("error");
     }
   };
 
@@ -89,8 +115,11 @@ function AdminKonser() {
 
   const handleAddKonser = async (e) => {
     e.preventDefault();
+    setStatusMsg("");
+    setStatusType("");
     if (!accessToken) {
-      alert("Anda harus login sebagai admin.");
+      setStatusMsg("Anda harus login sebagai admin.");
+      setStatusType("error");
       return;
     }
     try {
@@ -110,9 +139,12 @@ function AdminKonser() {
         }
       );
       fetchKonser();
+      setStatusMsg("Berhasil menambah konser.");
+      setStatusType("success");
     } catch (error) {
       console.error("Error adding konser:", error);
-      alert(error.response?.data?.message || "Gagal menambah konser");
+      setStatusMsg(error.response?.data?.message || "Gagal menambah konser");
+      setStatusType("error");
     }
   };
 
@@ -174,6 +206,11 @@ function AdminKonser() {
       <section className="section" style={{ flexGrow: 1 }}>
         <div className="container box">
           <h2 className="title is-4">Tambah Konser Baru</h2>
+          {statusMsg && (
+            <div className={`mb-3 has-text-centered ${statusType === "error" ? "has-text-danger" : "has-text-success"}`}>
+              {statusMsg}
+            </div>
+          )}
           <form onSubmit={handleAddKonser}>
             <div className="columns is-multiline">
               <div className="column is-half">
@@ -300,6 +337,11 @@ function AdminKonser() {
       <section className="section">
         <div className="container box">
           <h2 className="title is-4">Daftar Konser</h2>
+          {statusMsg && (
+            <div className={`mb-3 has-text-centered ${statusType === "error" ? "has-text-danger" : "has-text-success"}`}>
+              {statusMsg}
+            </div>
+          )}
           <div className="table-container">
             <table className="table is-fullwidth is-striped is-hoverable">
               <thead>
@@ -332,6 +374,12 @@ function AdminKonser() {
                         className="button is-warning is-small"
                       >
                         Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteKonser(konser.id)}
+                        className="button is-warning is-small"
+                      >
+                        Delete
                       </button>
                     </td>
                   </tr>
