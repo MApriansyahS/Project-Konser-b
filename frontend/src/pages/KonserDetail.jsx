@@ -10,6 +10,8 @@ function KonserDetail() {
   const [konser, setKonser] = useState(null);
   const [tiket, setTiket] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [umur, setUmur] = useState(localStorage.getItem("umur") || "");
+  const [nama, setNama] = useState(localStorage.getItem("nama") || "");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,30 +43,26 @@ function KonserDetail() {
   const handleOrder = async () => {
     if (!accessToken || !konser || !tiket) return;
     try {
-      const usersStr = localStorage.getItem("users");
-      let users = null;
-      if (usersStr) {
-        users = JSON.parse(usersStr);
-      }
-      if (!users) {
-        users = { nama: "", email: "", umur: "" };
-      }
-      const pengunjungRes = await axios.get(`${BASE_URL}/pengunjung`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      const sudahBeli = (pengunjungRes.data.data || []).some(
-        (p) => p.email === users.email && p.tiket === konser.nama
-      );
-      if (sudahBeli) {
-        alert("Anda sudah membeli tiket konser ini!");
-        return;
-      }
-      await axios.patch(
+      const email = localStorage.getItem("email");
+      
+    await axios.get(
+        `${BASE_URL}/users/${email}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+    );
+
+    if (tiket.quota <= 0) {
+      alert("Maaf, tiket sudah habis!");
+      return;
+    }
+    await axios.patch(
         `${BASE_URL}/order/${tiket.id}`,
         {
           nama: users.nama,
           email: users.email,
           umur: users.umur,
+          tiket: tiket.nama,
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },

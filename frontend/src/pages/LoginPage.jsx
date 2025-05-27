@@ -20,6 +20,7 @@ const LoginPage = () => {
         if (email === "admin@gmail.com") {
           navigate("/admin-dashboard");
         } else {
+          localStorage.setItem("email", email);
           navigate("/dashboard");
         }
       } else {
