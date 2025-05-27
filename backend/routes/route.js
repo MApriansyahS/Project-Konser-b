@@ -70,9 +70,9 @@ router.get("/tiket", verifyToken, getTiket);
 router.get("/tiket/:id", verifyToken, getTiketById);
 //router.post("/tiket", verifyToken, addTiket);
 router.patch("/tiket/:id", verifyToken, updateTiket);
-router.delete("/tiket/:id", verifyToken, deleteTiket);
+//router.delete("/tiket/:id", verifyToken, deleteTiket);
 
 // ORDER TIKET
-router.patch("/order/:id", verifyToken, orderTicket, addPengunjung);
+router.patch("/order/:id", verifyToken, orderTicket);
 
 export default router;

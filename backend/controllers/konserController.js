@@ -1,5 +1,6 @@
 import Konser from "../models/konserModel.js";
 import Tiket from "../models/tiketModel.js";
+import Pengunjung from "../models/pengunjungModel.js";
 
 //GET KONSER
 export const getKonser = async (req, res) => {
@@ -126,6 +127,7 @@ export const updateKonser = async (req, res) => {
       error.statusCode = 400;
       throw error;
     }
+    const oldNama = ifKonserExist.nama;
     let updatedData = { nama, poster, tanggal, lokasi, bintangtamu };
 
     await Konser.update(updatedData, {
@@ -137,10 +139,16 @@ export const updateKonser = async (req, res) => {
         where: { id: req.params.id },
       }
     );
+    await Pengunjung.update(
+      { tiket: nama },
+      {
+        where: { tiket: oldNama },
+      }
+    );
 
     res.status(200).json({
       status: "Success",
-      message: "Konser & Tiket Updated",
+      message: "Konser & Tiket & Pengunjung Updated",
     });
   } catch (error) {
     res.status(error.statusCode || 500).json({
