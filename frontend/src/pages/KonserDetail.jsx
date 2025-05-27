@@ -45,12 +45,17 @@ function KonserDetail() {
     try {
       const email = localStorage.getItem("email");
       
-    await axios.get(
+        const res = await axios.get(
         `${BASE_URL}/users/${email}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
-    );
+    );    
+        setNama(res.data.nama);
+        setUmur(res.data.umur);
+        localStorage.setItem("nama", res.data.nama);
+        localStorage.setItem("umur", res.data.umur);
+    
 
     if (tiket.quota <= 0) {
       alert("Maaf, tiket sudah habis!");
@@ -59,9 +64,9 @@ function KonserDetail() {
     await axios.patch(
         `${BASE_URL}/order/${tiket.id}`,
         {
-          nama: users.nama,
-          email: users.email,
-          umur: users.umur,
+          nama: nama,
+          email: email,
+          umur: umur,
           tiket: tiket.nama,
         },
         {
